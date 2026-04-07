@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Integrated Virtual Laboratory Workbench</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .landing-container {
+            text-align: center;
+            padding: 40px;
+            max-width: 800px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 24px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .description {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            opacity: 0.85;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card i {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #ff4800;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 36px;
+            }
+            .subtitle {
+                font-size: 20px;
+            }
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="landing-container">
+        <div class="logo">
+            <i class='bx bx-code-alt'></i> Virtual Lab Workbench
+        </div>
+        <div class="subtitle">AI-Integrated Web-Based Virtual Laboratory</div>
+        <div class="description">
+            Experience hands-on learning with isolated Docker environments, AI-powered assistance, 
+            and comprehensive analytics. Access your labs anytime, anywhere.
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <i class='bx bx-code-block'></i>
+                <h3>Docker Labs</h3>
+                <p>Isolated environments for safe experimentation</p>
+            </div>
+            <div class="feature-card">
+                <i class='bx bx-brain'></i>
+                <h3>AI Assistant</h3>
+                <p>Real-time debugging and guidance</p>
+            </div>
+            <div class="feature-card">
+                <i class='bx bx-chart'></i>
+                <h3>Analytics</h3>
+                <p>Track your progress and performance</p>
+            </div>
+            <div class="feature-card">
+                <i class='bx bx-trophy'></i>
+                <h3>Gamification</h3>
+                <p>Earn badges and achievements</p>
+            </div>
+        </div>
+
+        <a href="login.html" class="cta-button">Get Started →</a>
+    </div>
+
+    <script>
+        // Auto-redirect to login after 5 seconds (optional)
+        // setTimeout(() => {
+        //     window.location.href = 'login.html';
+        // }, 5000);
+    </script>
+</body>
+</html>
+

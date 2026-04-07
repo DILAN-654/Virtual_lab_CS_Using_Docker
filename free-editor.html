@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Code Editor - Virtual Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="Style/code-editor.css?v=20260323-terminal-layout">
+</head>
+<body class="editor-page free-editor-page">
+    <div class="editor-app">
+        <header class="editor-header">
+            <div class="header-left">
+                <button class="btn-icon" type="button" onclick="goBackToDashboard()" title="Back to Dashboard">
+                    <i class='bx bx-arrow-back'></i>
+                </button>
+                <div class="header-copy">
+                    <span class="header-kicker">Free Practice</span>
+                    <h1>Free Code Editor</h1>
+                    <p class="header-subtitle">Practice with the same secure, split-screen workspace used for lab assignments.</p>
+                </div>
+                <span class="save-indicator" id="saveIndicator">Auto-saving...</span>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" type="button" onclick="showEditorInfo()" title="Editor Info">
+                    <i class='bx bx-info-circle'></i>
+                    Info
+                </button>
+                <button class="btn btn-success" id="runBtn" type="button" onclick="runCode()" title="Run Code (Ctrl+Enter)">
+                    <i class='bx bx-play'></i>
+                    Run
+                </button>
+                <button class="btn btn-primary" id="saveBtn" type="button" onclick="saveToMyLabs()" title="Save to My Lab Files">
+                    <i class='bx bx-save'></i>
+                    Save to My Labs
+                </button>
+            </div>
+        </header>
+
+        <main class="editor-body">
+            <section class="free-editor-banner">
+                <div class="hero-copy">
+                    <h2><i class='bx bx-code-alt'></i> Free Programming Lab</h2>
+                    <p>Practice any supported language in a compact split workspace. Input, output, and runtime errors stay together in one console.</p>
+                </div>
+            </section>
+
+            <section class="editor-toolbar">
+                <div class="toolbar-left">
+                    <label class="toolbar-field" for="languageSelect">
+                        <span>Runtime language</span>
+                        <select id="languageSelect" onchange="changeLanguage(this.value)" class="language-select">
+                            <option value="python">Python</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="java">Java</option>
+                            <option value="c">C</option>
+                            <option value="cpp">C++</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="toolbar-actions">
+                    <button class="btn-icon" type="button" onclick="resetCode()" title="Reset Code">
+                        <i class='bx bx-reset'></i>
+                    </button>
+                    <button class="btn-icon" type="button" onclick="downloadCode()" title="Download Code">
+                        <i class='bx bx-download'></i>
+                    </button>
+                    <button class="btn-icon" type="button" onclick="toggleLineNumbers()" title="Toggle Line Numbers">
+                        <i class='bx bx-list-ol'></i>
+                    </button>
+                </div>
+            </section>
+
+            <section id="csvUploadSection" class="csv-upload-section" style="display: none;">
+                <div class="upload-head">
+                    <div>
+                        <span class="panel-kicker upload-kicker">Optional Data File</span>
+                        <h3>Attach CSV input for Python runs</h3>
+                        <p>Only upload a CSV when your Python practice code reads from a file during execution.</p>
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <input type="file" id="csvFile" accept=".csv">
+                    <span id="csvFileName">No file selected</span>
+                </div>
+            </section>
+
+            <div class="workspace-tabs" role="tablist" aria-label="Utility workspace tabs">
+                <button class="workspace-tab is-hidden" type="button" data-workspace-tab="editor" aria-hidden="true" tabindex="-1">Editor</button>
+                <button class="workspace-tab active" type="button" data-workspace-tab="console">Console</button>
+                <button class="workspace-tab" type="button" data-workspace-tab="ai-help">AI Help</button>
+            </div>
+
+            <section class="workspace-panels">
+                <section id="editor-workspace-panel" class="workspace-panel active">
+                    <div class="editor-pane-card">
+                        <div class="panel-header">
+                            <div>
+                                <span class="panel-kicker">Code Editor</span>
+                                <h3>Write and test your ideas</h3>
+                                <p class="panel-supporting-copy">The editor stays open while you inspect runtime feedback on the right.</p>
+                            </div>
+                            <div class="panel-chip-row">
+                                <span class="soft-chip">Autosaved per user</span>
+                                <span class="soft-chip">Save to My Labs anytime</span>
+                            </div>
+                        </div>
+                        <div class="editor-wrapper">
+                            <div id="lineNumbers" class="line-numbers" aria-hidden="true"></div>
+                            <textarea id="codeEditor" class="code-editor" placeholder="Start coding here..."></textarea>
+                            <pre id="codeHighlight" class="code-highlight"><code id="codeHighlightContent" class="language-python"></code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="console-workspace-panel" class="workspace-panel active">
+                    <div class="console-panel-grid">
+                        <div id="outputPanel" class="console-block terminal-console-card">
+                            <div class="console-header">
+                                <div>
+                                    <div class="output-label">Console</div>
+                                    <div class="console-meta" id="consoleMeta">Run your code to see the full terminal transcript here.</div>
+                                </div>
+                                <div class="console-header-status">
+                                    <span class="execution-status idle" id="executionStatus">Ready</span>
+                                    <div class="console-spinner" id="consoleSpinner" hidden>
+                                        <span class="spinner-dot"></span>
+                                        <span>Running...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <pre id="outputContent" class="output-content terminal-output">Run your code to see the terminal output here.</pre>
+                            <div id="runtimeInputCard" class="runtime-input-card terminal-input-card">
+                                <div class="runtime-card-header">
+                                    <div>
+                                        <h3>Standard Input</h3>
+                                        <p id="inputRequirementText">Enter input if your program requires it. One line equals one input value.</p>
+                                    </div>
+                                </div>
+                                <textarea id="standardInput" class="input-textarea" placeholder="Type input values here, one per line..."></textarea>
+                                <div class="runtime-input-footer">
+                                    <span id="inputHintText">Programs that use stdin will read directly from this box.</span>
+                                    <button type="button" class="btn btn-secondary" id="clearInputBtn">Clear Input</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="ai-help-workspace-panel" class="workspace-panel">
+                    <div class="ai-help-section">
+                        <div class="panel-header">
+                            <div>
+                                <span class="panel-kicker">AI Help</span>
+                                <h3>Ask for debugging and syntax help</h3>
+                                <p class="panel-supporting-copy">Keep AI help beside the editor so you can compare suggestions without leaving your code.</p>
+                            </div>
+                        </div>
+                        <div class="ai-chat-messages" id="aiHelpMessages">
+                            <div class="ai-message">
+                                <div class="message-avatar">
+                                    <i class='bx bx-bot'></i>
+                                </div>
+                                <div class="message-content">
+                                    <p>I'm your offline code assistant. Ask for debugging help or prompts like `factorial python` and `fibonacci java`.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-chat-input">
+                            <input type="text" id="aiHelpInput" placeholder="Ask offline assistant...">
+                            <button class="btn-icon" id="sendAiBtn" type="button" onclick="sendAIHelp()">
+                                <i class='bx bx-send'></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <div id="saveModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeSaveModal()">&times;</span>
+            <h2>Save to My Lab Files</h2>
+            <div class="modal-form-stack">
+                <label for="fileName">File Name</label>
+                <input type="text" id="fileName" class="form-input" placeholder="e.g., my_solution.py">
+
+                <label for="fileDescription">Description (optional)</label>
+                <textarea id="fileDescription" class="form-input" placeholder="Describe what this code does..."></textarea>
+
+                <label for="fileTopic">Topic / Category</label>
+                <select id="fileTopic" class="form-input">
+                    <option value="">Select a topic...</option>
+                    <option value="basics">Programming Basics</option>
+                    <option value="loops">Loops & Iterations</option>
+                    <option value="functions">Functions</option>
+                    <option value="data-structures">Data Structures</option>
+                    <option value="oop">Object-Oriented Programming</option>
+                    <option value="algorithms">Algorithms</option>
+                    <option value="web">Web Development</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" type="button" onclick="confirmSaveToMyLabs()">
+                    <i class='bx bx-save'></i>
+                    Save File
+                </button>
+                <button class="btn btn-secondary" type="button" onclick="closeSaveModal()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="infoModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeInfoModal()">&times;</span>
+            <h2>Free Code Editor</h2>
+            <div class="modal-form-stack">
+                <p>Practice in the same split workspace pattern used by assigned labs.</p>
+                <ul>
+                    <li><strong>Split layout:</strong> Code stays visible while console and AI help stay beside it.</li>
+                    <li><strong>Secure drafts:</strong> Saved editor state is isolated by logged-in student.</li>
+                    <li><strong>Console workspace:</strong> Standard input, output, and errors stay together in one terminal view.</li>
+                    <li><strong>AI help:</strong> Ask for debugging and coding assistance.</li>
+                    <li><strong>Save to My Labs:</strong> Store your practice files for later.</li>
+                </ul>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" type="button" onclick="closeInfoModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="Scripts/api.js"></script>
+    <script src="Scripts/chatbotData.js?v=20260323-offline-ai"></script>
+    <script src="Scripts/chatbot.js?v=20260323-offline-ai"></script>
+    <script src="Scripts/free-editor.js?v=20260323-offline-ai"></script>
+</body>
+</html>

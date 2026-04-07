@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Virtual Lab Workbench</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="Style/student-dashboard.css">
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">
+            <i class='bx bx-code-alt'></i>
+            <span>Virtual Lab</span>
+        </div>
+        <nav class="nav-menu">
+            <a href="#quick-lab" class="nav-item active">
+                <i class='bx bx-play-circle'></i>
+                <span>Quick Lab Access</span>
+            </a>
+            <a href="#ai-assistant" class="nav-item">
+                <i class='bx bx-bot'></i>
+                <span>AI Assistant</span>
+            </a>
+            <a href="#assigned-labs" class="nav-item">
+                <i class='bx bx-task'></i>
+                <span>Assigned Labs</span>
+            </a>
+            <a href="#analytics" class="nav-item">
+                <i class='bx bx-bar-chart-alt-2'></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#gamification" class="nav-item">
+                <i class='bx bx-trophy'></i>
+                <span>Gamification</span>
+            </a>
+            <a href="#lab-files" class="nav-item">
+                <i class='bx bx-folder'></i>
+                <span>My Lab Files</span>
+            </a>
+            <a href="#notifications" class="nav-item">
+                <i class='bx bx-bell'></i>
+                <span>Notifications</span>
+                <span class="badge">3</span>
+            </a>
+        </nav>
+        <div class="user-profile">
+            <div class="user-info">
+                <i class='bx bx-user-circle'></i>
+                <span id="studentName">Student</span>
+            </div>
+            <a href="login.html" class="logout-btn">
+                <i class='bx bx-log-out'></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-actions">
+                <div class="search-box">
+                    <i class='bx bx-search'></i>
+                    <input type="text" placeholder="Search labs...">
+                </div>
+            </div>
+        </header>
+
+        <!-- Quick Lab Access Section -->
+        <section id="quick-lab" class="content-section active">
+            <div class="section-header">
+                <h2>Quick Actions</h2>
+                <p>Jump back into your workspace, view assigned labs, and check your latest activity.</p>
+            </div>
+
+            <div class="quick-dashboard-grid">
+                <article class="quick-dashboard-card welcome-card">
+                    <span class="quick-card-tag">Welcome Back</span>
+                    <h3 id="quickWelcomeTitle">Welcome back, Student</h3>
+                    <p id="quickWelcomeSummary">Your coding workspace is ready whenever you are.</p>
+                    <div class="quick-card-actions">
+                        <button class="btn btn-primary" onclick="openFreeEditor()">
+                            <i class='bx bx-code-alt'></i> Open Free Editor
+                        </button>
+                    </div>
+                </article>
+
+                <article class="quick-dashboard-card assigned-card">
+                    <span class="quick-card-tag">Assigned Labs</span>
+                    <h3 id="quickAssignedCount">0</h3>
+                    <p id="quickAssignedSummary">No assigned labs yet.</p>
+                    <div class="quick-card-actions">
+                        <button class="btn btn-outline" onclick="openStudentSection('assigned-labs')">
+                            <i class='bx bx-task'></i> View Assigned Labs
+                        </button>
+                    </div>
+                </article>
+            </div>
+
+            <div class="recent-activity-card">
+                <div class="recent-activity-header">
+                    <div>
+                        <h3>Recent Activity</h3>
+                        <p>Your latest task and notification updates appear here.</p>
+                    </div>
+                </div>
+                <div id="quickRecentActivity" class="quick-activity-list">
+                    <div class="quick-activity-empty">Recent activity will appear here once your lab work starts updating.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Assistant Section -->
+        <section id="ai-assistant" class="content-section">
+            <div>
+                <h2>AI Assistant</h2>
+                <p>Get offline programming help with static code examples and lab guidance</p>
+            </div>
+            
+            <div class="ai-chat-container">
+                <div class="ai-chat-messages" id="aiChatMessages">
+                    <div class="ai-message">
+                        <div class="message-avatar">
+                            <i class='bx bx-bot'></i>
+                        </div>
+                        <div class="message-content">
+                            <p>Hello! I'm your offline Virtual Lab assistant. Ask me for code like `factorial python` or `calculator c++`.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-chat-input">
+                    <input type="text" id="aiInput" placeholder="Ask offline assistant about your lab...">
+                    <button class="btn btn-primary" id="sendAiMessage">
+                        <i class='bx bx-send'></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assigned Labs & Tasks -->
+        <section id="assigned-labs" class="content-section">
+            <div>
+                <h2>Assigned Labs & Tasks</h2>
+            </div>
+
+    <!-- Tasks Container -->
+    <div id="assigned-tasks-section" style="margin-bottom: 40px;">
+        <h3 style="margin-top: 0; margin-bottom: 20px;">My Tasks</h3>
+        <div id="assignedTasksContainer">
+            <!-- Tasks will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Labs Container -->
+    <div id="assigned-labs-section">
+        <h3 style="margin-bottom: 20px;">My Labs</h3>
+        <div id="labsContainer" class="lab-grid">
+            <!-- Labs will be inserted here -->
+        </div>
+    </div>
+</section>
+
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="content-section">
+            <div class="section-header">
+                <h2>Performance & Progress Analytics</h2>
+                <p>Track your lab completion, time spent, and performance metrics</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #4CAF50;">
+                        <i class='bx bx-check-circle'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalLabsCompleted">0</h3>
+                        <p>Labs Completed</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #2196F3;">
+                        <i class='bx bx-time'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalTimeSpent">0h</h3>
+                        <p>Total Time Spent</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #FF9800;">
+                        <i class='bx bx-star'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="averageScore">0%</h3>
+                        <p>Average Score</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #F44336;">
+                        <i class='bx bx-error-circle'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalErrors">0</h3>
+                        <p>Total Errors</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Lab Completion Progress</h3>
+                    <canvas id="completionChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Time Spent Per Lab</h3>
+                    <canvas id="timeSpentChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Common Errors</h3>
+                    <canvas id="errorsChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Performance Trends</h3>
+                    <canvas id="trendsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gamification Section -->
+        <section id="gamification" class="content-section">
+            <div class="section-header">
+                <div>
+                    <h2>Gamification Zone</h2>
+                    <p>Track your growth, badges, and live achievement updates</p>
+                </div>
+            </div>
+
+            <div class="gamification-content">
+                <div class="rank-card">
+                    <h3>Your Current Rank</h3>
+                    <div class="rank-display">
+                        <i class='bx bx-medal'></i>
+                        <span class="rank-level"><span id="userLevel">1</span> - <span id="userRank">Beginner</span></span>
+                    </div>
+                    <div class="xp-bar">
+                        <div class="xp-fill xp-progress-fill" style="width: 0%"></div>
+                        <span class="xp-text"><span id="userXP">0</span> XP</span>
+                    </div>
+                </div>
+
+                <div class="gamification-stats-grid">
+                    <div class="gamification-stat-card">
+                        <span class="gamification-stat-label">Total Points</span>
+                        <strong id="totalPointsEarned">0</strong>
+                    </div>
+                    <div class="gamification-stat-card">
+                        <span class="gamification-stat-label">Badges Earned</span>
+                        <strong id="badgesEarnedCount">0</strong>
+                    </div>
+                    <div class="gamification-stat-card">
+                        <span class="gamification-stat-label">Labs Completed</span>
+                        <strong id="labsCompletedStat">0</strong>
+                    </div>
+                    <div class="gamification-stat-card">
+                        <span class="gamification-stat-label">First Attempt Wins</span>
+                        <strong id="firstAttemptStat">0</strong>
+                    </div>
+                </div>
+
+                <div class="badges-section">
+                    <h3>Your Badges</h3>
+                    <div id="badgesContainer"></div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3>Live Updates</h3>
+                    <div id="gamificationUpdatesContainer"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lab Files Section -->
+        <section id="lab-files" class="content-section">
+            <div class="section-header actionable">
+                <h2>My Lab Files & Submissions</h2>
+                <button class="btn btn-primary">
+                    <i class='bx bx-upload'></i> Upload File
+                </button>
+            </div>
+
+            <div id="myLabFilesContainer"></div>
+        </section>
+
+        <!-- Notifications Section -->
+        <section id="notifications" class="content-section">
+            <div class="section-header actionable">
+                <div>
+                    <h2>Notification Center</h2>
+                    <p>Open task and gamification updates directly from here</p>
+                </div>
+                <button class="btn btn-outline" id="markAllNotificationsBtn">Mark All Read</button>
+            </div>
+
+            <div id="notificationsContainer"></div>
+        </section>
+    </div>
+
+    <script src="Scripts/api.js"></script>
+    <script src="Scripts/chatbotData.js?v=20260323-offline-ai"></script>
+    <script src="Scripts/chatbot.js?v=20260323-offline-ai"></script>
+    <script src="Scripts/student-dashboard.js?v=20260323-offline-ai"></script>
+</body>
+</html>

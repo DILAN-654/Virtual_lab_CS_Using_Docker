@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Virtual Lab Workbench</title>
+    <link rel="stylesheet" href="Style/login.css">
+    <link rel="stylesheet" href="Style/responsive.css"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+  <body>
+
+    <!-- credits to the writter @leonam-silva-de-souza -->
+      <div class="video-background" aria-hidden="true">
+          <video class="video-background__media" autoplay muted loop playsinline preload="auto">
+              <source src="uploads/lock.mp4" type="video/mp4">
+          </video>
+          <div class="video-background__overlay"></div>
+      </div>
+      <div class="container">
+          <div class="form-box login">
+            <form id="studentLoginForm">
+                <h1>Student Login</h1>
+              
+                <div class="input-box">
+                  <input type="text" id="studentUsername"
+                         placeholder="Username or Email"
+                         autocomplete="username">
+                  <i class='bx bxs-user'></i>
+                </div>
+              
+                <div class="input-box">
+                  <input type="password" id="studentPassword"
+                         placeholder="Password"
+                         autocomplete="current-password">
+                  <i class='bx bxs-lock-alt password-icon'></i>
+                  <i class='bx bx-hide password-toggle' id="studentPasswordToggle"></i>
+                </div>
+              
+                <p class="form-message" id="studentMessage"></p>
+              
+                <button type="submit" class="btn" id="studentSubmit">Login</button>
+              </form>
+              
+          </div>
+
+          <div class="form-box register">
+            <form id="adminLoginForm">
+                <h1>Admin Login</h1>
+              
+                <div class="input-box">
+                  <input type="text" id="adminUsername"
+                         placeholder="Username or Email"
+                         autocomplete="username">
+                  <i class='bx bxs-user'></i>
+                </div>
+              
+                <div class="input-box">
+                  <input type="password" id="adminPassword"
+                         placeholder="Password"
+                         autocomplete="current-password">
+                  <i class='bx bxs-lock-alt password-icon'></i>
+                  <i class='bx bx-hide password-toggle' id="adminPasswordToggle"></i>
+                </div>
+              
+                <p class="form-message" id="adminMessage"></p>
+              
+                <button type="submit" class="btn" id="adminSubmit">Login</button>
+              </form>
+              
+          </div>
+
+          <div class="toggle-box">
+              <div class="toggle-panel toggle-left">
+                  <h1>Hello, Student!</h1>
+                  <p>Welcome to Virtual Lab Workbench</p>
+                  <p>Access your labs and assignments</p>
+                  <button class="btn admin-btn">Admin Login</button>
+              </div>
+
+              <div class="toggle-panel toggle-right">
+                  <h1>Admin Portal</h1>
+                  <p>Manage labs, users, and tasks</p>
+                  <button class="btn login-btn">Student Login</button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Forgot Password Modal -->
+      <div id="forgotPasswordModal" class="modal" style="display: none;">
+          <div class="modal-content">
+              <span class="close-modal">&times;</span>
+              <h2>Reset Password</h2>
+              <form id="forgotPasswordForm">
+                  <div class="input-box">
+                      <input type="email" id="resetEmail" placeholder="Enter your email" required>
+                      <i class='bx bxs-envelope'></i>
+                  </div>
+                  <button type="submit" class="btn">Send Reset Link</button>
+                  <p class="modal-message" id="resetMessage"></p>
+              </form>
+          </div>
+      </div>
+
+      <script src="Scripts/api.js"></script>
+      <script src="Scripts/login.js"></script>
+  </body>
+</html>

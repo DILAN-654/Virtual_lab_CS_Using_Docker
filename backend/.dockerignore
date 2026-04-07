@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.env
+uploads
+*.log
+test-*.js
+scripts
+GEMINI_SETUP.md
